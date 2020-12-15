@@ -1,0 +1,4 @@
+*.config.js
+*.config.ts
+dist/
+node_modules/
