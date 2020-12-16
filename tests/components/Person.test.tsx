@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import Person from '../src/components/people/Person';
-import { IPerson } from '../src/types/person.type';
+import Person from '../../src/components/people/Person';
+import { IPerson } from '../../src/types/person.type';
 
 describe('Person Component', () => {
   const person: IPerson = {
