@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { CgClose } from 'react-icons/cg';
-import { useSelector } from 'react-redux';
-import { Link, useRouteMatch } from 'react-router-dom';
-import { selectAllPeople } from '../../state/people/people.selectors';
-import { People } from '../../types/person.type';
+import { shallowEqual, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { selectAllChats } from '../../state/chats/chats.selectors';
+import { selectAllPeopleEntities } from '../../state/people/people.selectors';
+import { IPerson } from '../../types/person.type';
+import { keyIn } from '../../utils/typeGuards';
 import Person from '../people/Person';
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({ hideSidebar, className = '', ...props }) => {
-  const { url } = useRouteMatch();
-  const people: People = useSelector(selectAllPeople);
+  const people = useSelector(selectAllPeopleEntities, shallowEqual);
+  const chatsWithDefinedPerson = useSelector(selectAllChats).filter((chat) =>
+    keyIn(chat.personId, people),
+  );
 
   return (
     <div {...props} className={`${className}`}>
@@ -24,11 +28,16 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ hideSidebar, className = '', 
         </button>
       </header>
       <ul className="space-y-1 p-2">
-        {people.map((person) => (
-          <li key={person.id}>
-            <Link to={`${url}/${person.id}`} className="block hover:bg-gray-200 rounded-lg p-2">
-              <Person person={person} />
-            </Link>
+        {chatsWithDefinedPerson.map((chat) => (
+          <li key={chat.id}>
+            <NavLink
+              to={`/chats/${chat.id}`}
+              onClick={(): void => hideSidebar()}
+              className="block hover:bg-gray-200 rounded-lg p-2"
+              activeClassName="bg-gray-100"
+            >
+              <Person person={people[chat.personId] as IPerson} />
+            </NavLink>
           </li>
         ))}
       </ul>

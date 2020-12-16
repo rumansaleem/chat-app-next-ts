@@ -1,25 +1,45 @@
 import { Action } from 'redux';
-import { IMessage } from '../../types/chat.type';
+import { Chat } from '../../types/chat.type';
 
 export enum ChatActionTypes {
-  LOAD_CHAT = '[Chat] Load',
-  LOAD_CHAT_SUCCESS = '[Chat] Load Success',
-  LOAD_CHAT_FAILED = '[Chat] Load Failed',
+  FETCH_CHAT = '[Chat] Fetch',
+  FETCH_CHAT_SUCCESS = '[Chat] Fetch Success',
+  FETCH_CHAT_ERROR = '[Chat] Fetch Error',
+  SELECT_CHAT = '[Chat] Select',
 }
 
-export class LoadChat implements Action<ChatActionTypes> {
-  readonly type = ChatActionTypes.LOAD_CHAT;
-  constructor(public payload: { personId: string }) {}
+export interface FetchChat extends Action<ChatActionTypes> {
+  type: ChatActionTypes.FETCH_CHAT;
+  payload: { personId: string };
+}
+export interface FetchChatSuccess extends Action<ChatActionTypes> {
+  type: ChatActionTypes.FETCH_CHAT_SUCCESS;
+  payload: { personId: string; chat: Chat };
+}
+export interface FetchChatError extends Action<ChatActionTypes> {
+  type: ChatActionTypes.FETCH_CHAT_ERROR;
+  payload: { error: unknown };
+}
+export interface SelectChat extends Action<ChatActionTypes> {
+  type: ChatActionTypes.SELECT_CHAT;
+  payload: { chatId: string };
 }
 
-export class LoadChatSuccess implements Action<ChatActionTypes> {
-  readonly type = ChatActionTypes.LOAD_CHAT_SUCCESS;
-  constructor(public payload: { personId: string; messages: IMessage[] }) {}
-}
+export const fetchChat = (payload: { personId: string }): FetchChat => ({
+  type: ChatActionTypes.FETCH_CHAT,
+  payload,
+});
+export const fetchChatSuccess = (payload: { personId: string; chat: Chat }): FetchChatSuccess => ({
+  type: ChatActionTypes.FETCH_CHAT_SUCCESS,
+  payload,
+});
+export const selectChat = (payload: { chatId: string }): SelectChat => ({
+  type: ChatActionTypes.SELECT_CHAT,
+  payload,
+});
+export const FetchChatError = (payload: { error: unknown }): FetchChatError => ({
+  type: ChatActionTypes.FETCH_CHAT_ERROR,
+  payload,
+});
 
-export class LoadChatFailed implements Action<ChatActionTypes> {
-  readonly type = ChatActionTypes.LOAD_CHAT_FAILED;
-  constructor(public payload: { personId: string; error: unknown }) {}
-}
-
-export type ChatActions = LoadChat | LoadChatSuccess | LoadChatFailed;
+export type ChatActions = FetchChat | FetchChatSuccess | FetchChatError | SelectChat;

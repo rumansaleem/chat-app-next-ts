@@ -14,12 +14,23 @@ const routes: RouteInfo[] = [
     type: 'redirect',
     exact: true,
     path: '/',
-    redirect: { to: '/chat' },
+    redirect: { to: '/chats' },
   },
   {
     type: 'component',
-    path: '/chat',
+    path: '/chats/:chatId?',
     component: ChatPage,
+  },
+  {
+    type: 'component',
+    path: '*',
+    component: function ErrorPage(): JSX.Element {
+      return (
+        <h1 className="font-bold text-xl h-screen flex items-center justify-center">
+          Error: 404 - Not Found
+        </h1>
+      );
+    },
   },
 ];
 
@@ -45,17 +56,17 @@ export const SwitchRoutes: React.FC<SwitchRoutesProps> = ({ routes, ...props }) 
 };
 
 export type SwitchRoutesProps = SwitchProps & { routes: RouteInfo[] };
-export type PageComponent = React.FC<{ routes?: RouteInfo[] } & RouteComponentProps>;
+export type RouterPageProps = { routes?: RouteInfo[] } & RouteComponentProps;
 
 interface BaseRouteInfo {
-  path: string;
+  path: string | string[] | undefined;
   exact?: boolean;
   routes?: RouteInfo[];
 }
 
 interface ComponentRouteInfo extends BaseRouteInfo {
   type: 'component';
-  component: PageComponent;
+  component: React.FC<RouterPageProps>;
 }
 
 interface RedirectRouteInfo extends BaseRouteInfo {

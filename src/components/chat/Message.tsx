@@ -23,7 +23,7 @@ const Message: React.FC<MessageProps> = ({ message, className = '', ...props }) 
           {!message.inbound && message.sentTime && (
             <span className="text-xs inline-flex items-center text-gray-400">
               <CgCheck className="flex-none w-4 h-4" />
-              <span>{format(message.sentTime, 'hh:mm aaaa')}</span>
+              <span>{format(message.sentTime, 'hh:mm aa')}</span>
             </span>
           )}
         </div>
