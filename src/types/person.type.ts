@@ -1,3 +1,5 @@
+import { EntityState } from '@reduxjs/toolkit';
+
 export interface IPerson {
   id: string;
   name: string;
@@ -7,10 +9,7 @@ export interface IPerson {
 }
 
 export type People = IPerson[];
-
-export interface PeopleState {
+export interface PeopleState extends EntityState<IPerson> {
   isLoading: boolean;
   errorMessage: string | null;
-  personIds: string[];
-  all: { [personId: string]: IPerson };
 }

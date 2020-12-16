@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CgChevronDoubleLeft, CgClose, CgCross } from 'react-icons/cg';
+import { CgClose } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { selectAllPeople } from '../../state/people/people.selectors';

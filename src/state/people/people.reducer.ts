@@ -1,10 +1,16 @@
-import { People, PeopleState } from '../../types/person.type';
+import { IPerson, People, PeopleState } from '../../types/person.type';
 import { stringifyError } from '../../utils/stringifiers';
 import { PeopleActions, PeopleActionTypes } from './people.actions';
+import { createEntityAdapter, EntityAdapter } from '@reduxjs/toolkit';
+import { AppState } from '..';
 
 export const peopleReducerKey = 'people';
 
-const initialPeopleList: People = [
+const peopleAdapter: EntityAdapter<IPerson> = createEntityAdapter<IPerson>({
+  selectId: (person: IPerson) => person.id,
+});
+
+const initialEntites: People = [
   {
     id: 'nmo',
     name: 'Narendra Modi',
@@ -35,18 +41,19 @@ const initialPeopleList: People = [
   },
 ];
 
-const initialPeopleState: PeopleState = {
+const initialPeopleState: PeopleState = peopleAdapter.getInitialState({
   isLoading: false,
   errorMessage: '',
-  all: initialPeopleList,
-};
+});
 
-export function reducer(state = initialPeopleState, action: PeopleActions): PeopleState {
+const seededPeopleState: PeopleState = peopleAdapter.setAll(initialPeopleState, initialEntites);
+
+export function reducer(state = seededPeopleState, action: PeopleActions): PeopleState {
   switch (action.type) {
     case PeopleActionTypes.LOAD_PEOPLE:
       return { ...state, isLoading: true };
     case PeopleActionTypes.LOAD_PEOPLE_SUCCESS:
-      return { ...state, all: action.payload.people, isLoading: false };
+      return peopleAdapter.setAll({ ...state, isLoading: false }, action.payload.people);
     case PeopleActionTypes.LOAD_PEOPLE_FAILED:
       const errorMessage = stringifyError(action.payload.error, '[People Error]');
       return { ...state, isLoading: false, errorMessage };
@@ -54,3 +61,5 @@ export function reducer(state = initialPeopleState, action: PeopleActions): Peop
       return state;
   }
 }
+
+export const peopleEntitySelectors = peopleAdapter.getSelectors((state: AppState) => state.people);
