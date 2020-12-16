@@ -28,7 +28,8 @@
     "prettier"
   ],
   "rules": {
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-case-declarations": "off"
   },
   "overrides": [
     /**

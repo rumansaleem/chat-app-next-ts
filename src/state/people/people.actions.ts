@@ -7,18 +7,18 @@ export enum PeopleActionTypes {
   LOAD_PEOPLE_FAILED = '[Load] People Failed',
 }
 
-export interface LoadPeople extends Action<PeopleActionTypes> {
-  type: PeopleActionTypes.LOAD_PEOPLE;
+export class LoadPeople implements Action<PeopleActionTypes> {
+  readonly type = PeopleActionTypes.LOAD_PEOPLE;
 }
 
-export interface LoadPeopleSuceess extends Action<PeopleActionTypes> {
-  type: PeopleActionTypes.LOAD_PEOPLE_SUCCESS;
-  payload: { people: People };
+export class LoadPeopleSuccess implements Action<PeopleActionTypes> {
+  readonly type = PeopleActionTypes.LOAD_PEOPLE_SUCCESS;
+  constructor(public payload: { people: People }) {}
 }
 
-export interface LoadPeopleFailed extends Action<PeopleActionTypes> {
-  type: PeopleActionTypes.LOAD_PEOPLE_FAILED;
-  payload: { error: unknown };
+export class LoadPeopleFailed implements Action<PeopleActionTypes> {
+  readonly type = PeopleActionTypes.LOAD_PEOPLE_FAILED;
+  constructor(public payload: { error: unknown }) {}
 }
 
-export type PeopleActions = LoadPeople | LoadPeopleSuceess | LoadPeopleFailed;
+export type PeopleActions = LoadPeople | LoadPeopleSuccess | LoadPeopleFailed;

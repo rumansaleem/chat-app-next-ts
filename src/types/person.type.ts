@@ -11,6 +11,6 @@ export type People = IPerson[];
 export interface PeopleState {
   isLoading: boolean;
   errorMessage: string | null;
-  selectedPersonId: string;
-  all: People;
+  personIds: string[];
+  all: { [personId: string]: IPerson };
 }

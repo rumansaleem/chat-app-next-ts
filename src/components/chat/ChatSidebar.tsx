@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CgChevronDoubleLeft, CgClose, CgCross } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { selectAllPeople } from '../../state/people/people.reducer';
+import { selectAllPeople } from '../../state/people/people.selectors';
 import { People } from '../../types/person.type';
 import Person from '../people/Person';
 

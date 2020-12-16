@@ -8,7 +8,9 @@ export interface IMessage {
 }
 
 export interface ChatState {
-  personId: string;
+  isLoading: boolean;
+  personId: string | null;
+  errorMessage: string;
   chats: {
     [personId: string]: IMessage[];
   };
