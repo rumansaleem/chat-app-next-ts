@@ -1,15 +1,28 @@
-import { combineReducers, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import * as React from 'react';
+import { combineReducers, createStore, StoreEnhancer } from 'redux';
 import * as fromPeople from './people/people.reducer';
 import * as fromChats from './chats/chats.reducer';
+import { Provider } from 'react-redux';
 
-const reducer = combineReducers({
+export const rootReducer = combineReducers({
   [fromPeople.peopleReducerKey]: fromPeople.reducer,
   [fromChats.chatsReducerKey]: fromChats.reducer,
 });
 
-export type AppState = ReturnType<typeof reducer>;
+export type AppState = ReturnType<typeof rootReducer>;
 
-const store = createStore(reducer, composeWithDevTools());
+export function withStore({
+  initialState,
+  enhancer,
+}: {
+  initialState?: AppState;
+  enhancer?: StoreEnhancer;
+} = {}): React.FC {
+  const store = createStore(rootReducer, initialState, enhancer);
 
-export default store;
+  return function StoreProvider({ children }): JSX.Element {
+    return React.createElement(Provider, { store }, children);
+  };
+}
+
+export default withStore;

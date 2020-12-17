@@ -6,7 +6,7 @@ import { ChatActions, ChatActionTypes } from './chats.actions';
 
 export const chatsReducerKey = 'chats';
 
-const chatsAdapter: EntityAdapter<Chat> = createEntityAdapter<Chat>({
+export const chatsAdapter: EntityAdapter<Chat> = createEntityAdapter<Chat>({
   selectId: (chat: Chat) => chat.id,
 });
 

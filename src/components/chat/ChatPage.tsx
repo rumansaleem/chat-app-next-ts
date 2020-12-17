@@ -29,7 +29,7 @@ const ChatPage: React.FC<RouterPageProps> = ({ routes }) => {
   }, [dispatch, chatId]);
 
   return (
-    <div className="relative flex h-screen">
+    <div data-testid="ChatPage" className="relative flex h-screen">
       {routes && <SwitchRoutes routes={routes} />}
       <CSSTransition
         in={showSidebar}

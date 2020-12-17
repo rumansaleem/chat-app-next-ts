@@ -26,7 +26,10 @@ const routes: RouteInfo[] = [
     path: '*',
     component: function ErrorPage(): JSX.Element {
       return (
-        <h1 className="font-bold text-xl h-screen flex items-center justify-center">
+        <h1
+          data-testid="NoMatch"
+          className="font-bold text-xl h-screen flex items-center justify-center"
+        >
           Error: 404 - Not Found
         </h1>
       );

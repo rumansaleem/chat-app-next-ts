@@ -6,7 +6,7 @@ import { AppState } from '..';
 
 export const peopleReducerKey = 'people';
 
-const peopleAdapter: EntityAdapter<IPerson> = createEntityAdapter<IPerson>({
+export const peopleAdapter: EntityAdapter<IPerson> = createEntityAdapter<IPerson>({
   selectId: (person: IPerson) => person.id,
 });
 
