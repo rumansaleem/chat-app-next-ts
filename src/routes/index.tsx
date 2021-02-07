@@ -19,7 +19,11 @@ const routes: RouteInfo[] = [
   {
     type: 'component',
     path: '/chats/:chatId?',
-    component: ChatPage,
+    component: function ChatRouteComp({
+      match,
+    }: RouteComponentProps<{ chatId?: string }>): JSX.Element {
+      return <ChatPage chatId={match.params.chatId} />;
+    },
   },
   {
     type: 'component',
@@ -59,7 +63,7 @@ export const SwitchRoutes: React.FC<SwitchRoutesProps> = ({ routes, ...props }) 
 };
 
 export type SwitchRoutesProps = SwitchProps & { routes: RouteInfo[] };
-export type RouterPageProps = { routes?: RouteInfo[] } & RouteComponentProps;
+export type RouterPageProps = { routes?: RouteInfo[] };
 
 interface BaseRouteInfo {
   path: string | string[] | undefined;
@@ -69,7 +73,7 @@ interface BaseRouteInfo {
 
 interface ComponentRouteInfo extends BaseRouteInfo {
   type: 'component';
-  component: React.FC<RouterPageProps>;
+  component: React.FC<RouteComponentProps & RouterPageProps>;
 }
 
 interface RedirectRouteInfo extends BaseRouteInfo {

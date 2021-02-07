@@ -41,7 +41,7 @@ const initialEntites: People = [
   },
 ];
 
-const initialPeopleState: PeopleState = peopleAdapter.getInitialState({
+export const initialPeopleState: PeopleState = peopleAdapter.getInitialState({
   isLoading: false,
   errorMessage: '',
 });

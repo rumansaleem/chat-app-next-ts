@@ -3,18 +3,20 @@ import { render } from 'react-dom';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
-import withStore from './state';
+import createAppStore from './state';
+import { Provider } from 'react-redux';
 
 function initializeReact(): void {
   const containerEl = document.getElementById('app');
   if (!containerEl) throw new Error('#app element was not found in the DOM.');
 
-  const StoreProvider = withStore({ enhancer: composeWithDevTools() });
+  const store = createAppStore({ enhancer: composeWithDevTools() });
+
   const AppWrapper = (
     <BrowserRouter>
-      <StoreProvider>
+      <Provider store={store}>
         <App />
-      </StoreProvider>
+      </Provider>
     </BrowserRouter>
   );
 

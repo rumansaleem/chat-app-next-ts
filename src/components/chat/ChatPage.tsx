@@ -2,23 +2,20 @@ import * as React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import ChatSidebar from './ChatSidebar';
 import useScreenDimensions from '../../utils/useScreenDimensions';
-import { RouterPageProps, SwitchRoutes } from '../../routes';
 import ChatHeader from './ChatHeader';
 import Message from './Message';
 import { CgAirplane, CgAttachment } from 'react-icons/cg';
-import { useParams } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { selectCurrentMessages } from '../../state/chats/chats.selectors';
 import { selectChat } from '../../state/chats/chats.actions';
 
-const ChatPage: React.FC<RouterPageProps> = ({ routes }) => {
+const ChatPage: React.FC<ChatPageProps> = ({ chatId = '' }) => {
   const [screenWidth] = useScreenDimensions();
   const isWideScreen = screenWidth > 680;
 
   const [showSidebar, setShowSidebar] = React.useState<boolean>(isWideScreen);
   const toggleSidebar = (): void => setShowSidebar((show) => !show);
 
-  const { chatId = '' } = useParams<{ chatId?: string }>();
   const chat = useSelector(selectCurrentMessages, shallowEqual);
   const dispatch = useDispatch();
 
@@ -30,7 +27,6 @@ const ChatPage: React.FC<RouterPageProps> = ({ routes }) => {
 
   return (
     <div data-testid="ChatPage" className="relative flex h-screen">
-      {routes && <SwitchRoutes routes={routes} />}
       <CSSTransition
         in={showSidebar}
         timeout={300}
@@ -86,5 +82,9 @@ const ChatPage: React.FC<RouterPageProps> = ({ routes }) => {
     </div>
   );
 };
+
+export interface ChatPageProps {
+  chatId?: string;
+}
 
 export default ChatPage;

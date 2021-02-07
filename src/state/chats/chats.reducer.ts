@@ -34,7 +34,7 @@ const getDummyChat = (personId: string): Chat => {
   return { ...chat, messages };
 };
 
-const initialChatsState: ChatState = chatsAdapter.getInitialState({
+export const initialChatsState: ChatState = chatsAdapter.getInitialState({
   errorMessage: '',
   isLoading: false,
   selectedChatId: undefined,

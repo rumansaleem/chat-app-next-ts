@@ -1,8 +1,6 @@
-import * as React from 'react';
-import { combineReducers, createStore, StoreEnhancer } from 'redux';
+import { combineReducers, createStore, Store, StoreEnhancer } from 'redux';
 import * as fromPeople from './people/people.reducer';
 import * as fromChats from './chats/chats.reducer';
-import { Provider } from 'react-redux';
 
 export const rootReducer = combineReducers({
   [fromPeople.peopleReducerKey]: fromPeople.reducer,
@@ -11,18 +9,14 @@ export const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>;
 
-export function withStore({
+function createAppStore({
   initialState,
   enhancer,
 }: {
-  initialState?: AppState;
+  initialState?: Partial<AppState>;
   enhancer?: StoreEnhancer;
-} = {}): React.FC {
-  const store = createStore(rootReducer, initialState, enhancer);
-
-  return function StoreProvider({ children }): JSX.Element {
-    return React.createElement(Provider, { store }, children);
-  };
+}): Store<AppState> {
+  return createStore(rootReducer, initialState, enhancer);
 }
 
-export default withStore;
+export default createAppStore;

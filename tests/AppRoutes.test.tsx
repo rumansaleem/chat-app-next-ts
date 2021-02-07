@@ -1,44 +1,53 @@
+import { RenderResult, screen } from '@testing-library/react';
 import * as React from 'react';
+import { Store } from 'redux';
 import App from '../src/components/App';
-import withStore, { AppState } from '../src/state';
-import { renderWithRouter } from './utils';
+import { AppState } from '../src/state';
+import ChatPage, { ChatPageProps } from '../src/components/chat/ChatPage';
+import { renderWithAppStateAndRouter } from './utils';
 
 const renderAppWithRouter = ({
-  initialState,
+  store,
   route = '/',
 }: {
-  initialState?: AppState;
+  store?: Store<AppState>;
   route?: string;
-}) => {
-  const StoreProvider = withStore({ initialState });
-  return renderWithRouter(
-    <StoreProvider>
-      <App />
-    </StoreProvider>,
-    { route },
-  );
+}): RenderResult => {
+  return renderWithAppStateAndRouter(<App />, { store, route });
 };
 
-describe('app routes & rendering', () => {
-  it('route "/chats" renders empty chat page', () => {
-    const route = '/chats';
-    const { getByTestId } = renderAppWithRouter({ route });
+jest.mock('../src/components/chat/ChatPage', () => {
+  const ChatPage = jest.fn(({ chatId }) => <div>{chatId}</div>);
+  return ChatPage;
+});
 
-    expect(getByTestId('ChatPage')).toBeInTheDocument();
+describe('app routes & rendering', () => {
+  it('route "/chats" renders ChatPage component w/o chat Id', () => {
+    const route = '/chats';
+    renderAppWithRouter({ route });
+
+    expect(ChatPage).toHaveBeenCalledWith<[ChatPageProps, React.Context<any>]>(
+      {},
+      expect.any(Object),
+    );
   });
 
-  it('route "/chats/:chatId" renders empty chat page', () => {
-    const route = '/chats/some-chat-id';
-    const { getByTestId } = renderAppWithRouter({ route });
+  it('route "/chats/:chatId" renders ChatPage component with given chatId', () => {
+    const chatId = 'some-chat-id';
+    const route = `/chats/${chatId}`;
+    renderAppWithRouter({ route });
 
-    expect(getByTestId('ChatPage')).toBeInTheDocument();
+    expect(ChatPage).toHaveBeenCalledWith<[ChatPageProps, React.Context<any>]>(
+      { chatId },
+      expect.any(Object),
+    );
   });
 
   it('unknown routes renders No Match component', () => {
     const route = '/some-unknown-path-that-will-probably-never-exist-in-the-app';
-    const { getByTestId, getByText } = renderAppWithRouter({ route });
+    renderAppWithRouter({ route });
 
-    expect(getByTestId('NoMatch')).toBeInTheDocument();
-    expect(getByText(/404/i)).toBeInTheDocument();
+    expect(screen.getByTestId('NoMatch')).toBeInTheDocument();
+    expect(screen.getByText(/404/i)).toBeInTheDocument();
   });
 });

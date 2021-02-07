@@ -15,6 +15,10 @@ export const selectAllChats = (state: AppState): Chat[] => {
   return chatsEntitySelectors.selectAll(state);
 };
 
+export const selectCurrentChatId = (state: AppState): string | undefined => {
+  return state.chats.selectedChatId;
+};
+
 export const selectCurrentMessages = (state: AppState): Chat | undefined => {
   const chatId = state.chats.selectedChatId;
 
